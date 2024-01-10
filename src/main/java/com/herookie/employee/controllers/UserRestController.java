@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.herookie.employee.dto.UserDTO;
+import com.herookie.employee.entities.Role;
 import com.herookie.employee.entities.User;
 import com.herookie.employee.exceptions.EntityNotFoundException;
 import com.herookie.employee.exceptions.UnsavedEntityException;
@@ -28,6 +29,29 @@ public class UserRestController {
     @Autowired
     private IUserService userService;
 
+    @PostMapping("/customer")
+    public ResponseEntity<UserDTO> createCustomer(@RequestBody User user) throws UnsavedEntityException {
+        user.setRole(Role.CUSTOMER);
+        User createdUser = userService.createUser(user);
+        UserDTO userDTO = convertToDTO(createdUser);
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/admin")
+    public ResponseEntity<UserDTO> createAdmin(@RequestBody User user) throws UnsavedEntityException {
+        user.setRole(Role.ADMIN);
+        User createdUser = userService.createUser(user);
+        UserDTO userDTO = convertToDTO(createdUser);
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/subadmin")
+    public ResponseEntity<UserDTO> createSubAdmin(@RequestBody User user) throws UnsavedEntityException {
+        user.setRole(Role.SUBADMIN);
+        User createdUser = userService.createUser(user);
+        UserDTO userDTO = convertToDTO(createdUser);
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+    }
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> users = userService.findAll();
@@ -44,7 +68,6 @@ public class UserRestController {
         userDTO.setContactPhone(user.getContactPhone());
         userDTO.setEmail(user.getEmail());
         userDTO.setFullName(user.getFullName());
-        userDTO.setJobTitle(user.getJobTitle());
         userDTO.setRole(user.getRole());
         return userDTO;
     }
@@ -78,56 +101,3 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
-
-// @RestController
-// @RequestMapping("/api/user")
-// public class UserRestController {
-
-// @Autowired
-// IUserService userService;
-
-// @GetMapping("/{id}")
-// public ResponseEntity<User> findById(@PathVariable("id") long userId)
-// throws ErrorProcessingException, EntityNotFoundException {
-// User salida = userService.findById(userId);
-// return new ResponseEntity<User>(salida, HttpStatus.OK);
-// }
-
-// @GetMapping("/find-all")
-// public ResponseEntity<List<User>> findAll() throws ErrorProcessingException {
-// List<User> salida = userService.findAll();
-// return new ResponseEntity<List<User>>(salida, HttpStatus.OK);
-// }
-
-// @GetMapping("/find-all-active")
-// public ResponseEntity<List<User>> findAllActive() throws
-// ErrorProcessingException {
-// List<User> salida = userService.findAllActive();
-// return new ResponseEntity<List<User>>(salida, HttpStatus.OK);
-// }
-
-// @PostMapping
-// public ResponseEntity<User> save(@RequestBody User user) throws
-// UnsavedEntityException {
-// User salida = userService.save(user);
-// return new ResponseEntity<User>(salida, HttpStatus.OK);
-// }
-
-// @PutMapping
-// public ResponseEntity<User> update(@RequestBody User user) throws
-// UnsavedEntityException {
-// User salida = userService.update(user);
-// return new ResponseEntity<User>(salida, HttpStatus.OK);
-// }
-
-// @PostMapping("/page-all-by-search")
-// public ResponseEntity<Page<User>> findAllPaginatedBySearch(
-// @RequestBody SearchPagination<String> searchPagination) throws
-// ErrorProcessingException {
-// PageRequest pageable = searchPagination.getPageRequest();
-// String search = searchPagination.getSeek();
-// Page<User> salida = userService.findAllPaginatedBySearch(search,
-// pageable);
-// return new ResponseEntity<Page<User>>(salida, HttpStatus.OK);
-// }
-// }

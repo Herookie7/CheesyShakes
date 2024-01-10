@@ -17,7 +17,6 @@ public class UserDTO {
     private String contactPhone;
     private String email;
     private String fullName;
-    private String jobTitle;
     private Role role;
 
     // getters and setters

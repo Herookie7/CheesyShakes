@@ -3,7 +3,6 @@ package com.herookie.employee.services;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import com.herookie.employee.entities.Attendance;
 import com.herookie.employee.entities.Role;
 import com.herookie.employee.entities.User;
 import com.herookie.employee.exceptions.EntityNotFoundException;
